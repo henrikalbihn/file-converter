@@ -41,5 +41,12 @@ python file_converter.py <input_file> -f <output_format> [-o <output_file>] [-v]
 To run the simulation:
 
 ```bash
+# Download dataset
+python download_dataset.py
+
+# Run simulation
 python simulate.py
+
+# Optional: generate plot
+python write_plot.py
 ```
