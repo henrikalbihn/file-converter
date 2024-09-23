@@ -13,6 +13,8 @@ def download_dataset() -> None:
     print("Downloading... Please wait.")
     dataset = load_dataset(DATASET_ID, "machine_learning")
 
+    Path(OUTPUT_FILE).parent.mkdir(parents=True, exist_ok=True)
+
     df = pd.concat(
         [
             dataset["auxiliary_train"].to_pandas(),
