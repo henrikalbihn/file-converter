@@ -1,6 +1,4 @@
-"""
-Convert an input file of {csv, parquet, json} format to {csv, parquet, json} format
-"""
+#!/usr/bin/env python3
 
 import argparse
 import time
