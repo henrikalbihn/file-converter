@@ -69,11 +69,13 @@ def execute() -> list[dict[str, dict[str, float]]]:
     ]
 
 
-def monte_carlo(iterations: int = ITERATIONS) -> list[dict[str, dict[str, float]]]:
+def monte_carlo(
+    iterations: int = ITERATIONS,
+) -> list[dict[str, dict[str, float]]]:
     """Run the simulation multiple times and return the results
 
     Args:
-        iterations (int, optional): The number of iterations to run. Defaults to 100.
+        iterations (int, optional): The number of iterations to run. Defaults to ITERATIONS.
 
     Returns:
         list[dict[str, dict[str, float]]]: The results of the simulation.
@@ -95,11 +97,15 @@ def save_results(results: list[dict[str, dict[str, float]]]) -> None:
     print(f"Results saved to [{OUTPUT_FILE}]")
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """Main function"""
     results = monte_carlo()
     df = pd.DataFrame(results)
     agg_func = {"duration": ["mean", "std", "min", "max", "median"]}
-    # Print summary statistics
     summary_stats = df.groupby("converter_type").agg(agg_func)
     print(summary_stats)
     save_results(results)
+
+
+if __name__ == "__main__":
+    main()
