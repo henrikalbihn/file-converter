@@ -12,6 +12,13 @@ def main() -> None:
         data = json.load(f)
     df = pd.DataFrame(data)
 
+    title = """
+Distribution of execution time (duckdb vs pandas)
+<br>
+<span style='font-size: 0.8em; color: gray'>
+    * lower is better
+</span>
+"""
     # overlap histogram of distribution of duration for each converter type
     fig = px.histogram(
         df,
@@ -22,6 +29,7 @@ def main() -> None:
         hover_data=df.columns,
         nbins=len(df),
         barmode="overlay",
+        title=title,
     )
     fig.write_image("img/plot.png")
 
