@@ -16,7 +16,7 @@ Plot saved to [img/plot.png]
 Complete! Total time: [268.05s]
 ```
 
-![plot](./img/plot.png)
+![plot](./img/newplot.png)
 
 Simulation results based on 100 iterations and 100k rows sampled from the machine learning subset of the [MMLU dataset](https://huggingface.co/datasets/lighteval/mmlu) `lighteval/mmlu`.
 
