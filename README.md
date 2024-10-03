@@ -1,8 +1,8 @@
 # File Conversion Benchmark 🦆🐻‍❄️🐼
 
-Comparison of file conversion between duckdb, polars and pandas.
+Comparison of file conversion between [duckdb](https://duckdb.org/), [polars](https://pola.rs/) and [pandas](https://pandas.pydata.org/).
 
-> On average, duckdb is ~3x faster than pandas, polars is ~3x faster than duckdb and ~10x faster than pandas.
+> On average, [`duckdb`](https://duckdb.org/) 🦆 is ~3x faster than [`pandas`](https://pandas.pydata.org/) 🐼, however [`polars`](https://pola.rs/) 🐻‍❄️ is ~3x faster than [`duckdb`](https://duckdb.org/) 🦆 and ~10x faster than [`pandas`](https://pandas.pydata.org/) 🐼. 🔥
 
 ```txt
 Running [100] iterations of the simulation...
