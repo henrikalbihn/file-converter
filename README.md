@@ -1,4 +1,4 @@
-# DuckDB/Polars/Pandas File Conversion Benchmark 🦆🐻‍❄️🐼
+# File Conversion Benchmark 🦆🐻‍❄️🐼
 
 Comparison of file conversion between duckdb, polars and pandas.
 
