@@ -1,6 +1,6 @@
 # File Conversion Benchmark 🦆🐻‍❄️🐼
 
-> *Note* This repo started from [this DuckDB vs Pandas comparison article](https://medium.com/gitconnected/3x-faster-file-conversion-with-duckdb-408ef18d2b04) and has since been expanded to include polars.
+> *Note* This repo started from [this DuckDB vs Pandas comparison article](https://levelup.gitconnected.com/3x-faster-file-conversion-with-duckdb-408ef18d2b04) and has since been expanded to include polars.
 
 Comparison of file conversion between [duckdb](https://duckdb.org/), [polars](https://pola.rs/) and [pandas](https://pandas.pydata.org/).
 
