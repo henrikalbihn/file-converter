@@ -1,10 +1,14 @@
 # File Conversion Benchmark 🦆🐻‍❄️🐼
 
+> *Note* This repo started from [this DuckDB vs Pandas comparison article](https://medium.com/gitconnected/3x-faster-file-conversion-with-duckdb-408ef18d2b04) and has since been expanded to include polars.
+
 Comparison of file conversion between [duckdb](https://duckdb.org/), [polars](https://pola.rs/) and [pandas](https://pandas.pydata.org/).
 
-> On average, [`duckdb`](https://duckdb.org/) 🦆 is ~3x faster than [`pandas`](https://pandas.pydata.org/) 🐼, however...
+On average, [`duckdb`](https://duckdb.org/) 🦆 is *~3x faster* than [`pandas`](https://pandas.pydata.org/) 🐼
 
-> 🔥 **[`polars`](https://pola.rs/) 🐻‍❄️ is ~3x faster than [`duckdb`](https://duckdb.org/) 🦆 and ~10x faster than [`pandas`](https://pandas.pydata.org/) 🐼.**
+> however...
+
+#### 🔥 [`polars`](https://pola.rs/) 🐻‍❄️ is *~3x faster than* [`duckdb`](https://duckdb.org/) 🦆 and **~10x faster** than [`pandas`](https://pandas.pydata.org/) 🐼
 
 ```txt
 Running [100] iterations of the simulation...
@@ -47,6 +51,8 @@ python file_converter.py <input_file> -f <output_format> [-o <output_file>] [-v]
 ### Polars script
 
 Standalone script - also includes checking if the system has the necessary dependencies.
+
+> Thanks to [@Nasdin](https://github.com/Nasdin) for the [polars script](https://gist.github.com/Nasdin/a1f4623e6557afb9e6a958a010e8bc53)! 🤝
 
 ```bash
 ./polars-converter.sh <input_file> -f <output_format> [-o <output_file>] [-v]
