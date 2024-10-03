@@ -1,20 +1,24 @@
-# DuckDB File Conversion Benchmark 🦆
+# DuckDB/Polars/Pandas File Conversion Benchmark 🦆🐻‍❄️🐼
 
-Comparison of file conversion between duckdb and pandas. On average, duckdb script is ~3x faster than pandas.
+Comparison of file conversion between duckdb, polars and pandas.
+
+> On average, duckdb is ~3x faster than pandas, polars is ~3x faster than duckdb and ~10x faster than pandas.
 
 ```txt
-                duration
-                    mean       std       min       max    median
-converter_type
-duckdb          0.707661  0.013660  0.696621  0.773661  0.704687
-pandas          2.140695  0.030148  2.111300  2.255578  2.134108
+Running [100] iterations of the simulation...
+  converter_type  duration
+                      mean       std       min       max    median
+0         duckdb  0.638409  0.017433  0.627250  0.738895  0.633449
+1         pandas  1.842512  0.027998  1.818738  2.007856  1.836374
+2         polars  0.190853  0.014131  0.171845  0.281984  0.186804
+Results saved to [data/simulation_results.json]
+Plot saved to [img/plot.png]
+Complete! Total time: [268.05s]
 ```
 
-![plot](img/plot.png)
+![plot](./img/plot.png)
 
-Simulation results based on 30 iterations and 100k rows sampled from the machine learning subset of the [MMLU dataset](https://huggingface.co/datasets/lighteval/mmlu) `lighteval/mmlu`.
-
-> Note: some additional performance overhead can be attributed to the python interpreter vs invoking duckdb directly from the shell. In fairness, the duckdb script runtime also includes checking if the system has the necessary dependencies and thus the performance difference is likely even more significant.
+Simulation results based on 100 iterations and 100k rows sampled from the machine learning subset of the [MMLU dataset](https://huggingface.co/datasets/lighteval/mmlu) `lighteval/mmlu`.
 
 ## Requirements
 
@@ -26,14 +30,24 @@ pip install -r requirements.txt
 
 ### DuckDB script
 
+Standalone script - also includes checking if the system has the necessary dependencies.
+
 ```bash
 ./file-converter.sh <input_file> -f <output_format> [-o <output_file>] [-v]
 ```
 
-### Python script
+### Pandas script
 
 ```bash
 python file_converter.py <input_file> -f <output_format> [-o <output_file>] [-v]
+```
+
+### Polars script
+
+Standalone script - also includes checking if the system has the necessary dependencies.
+
+```bash
+./polars-converter.sh <input_file> -f <output_format> [-o <output_file>] [-v]
 ```
 
 ### Simulation
@@ -45,8 +59,11 @@ To run the simulation:
 python download_dataset.py
 
 # Run simulation
-python simulate.py
-
-# Optional: generate plot
-python write_plot.py
+python 3way_simulation.py
 ```
+
+## Notes
+
+- This is not intended to be an exhaustive benchmark, and originally started from the `./file-converter.sh` script.
+- The `3way_simulation.py` script is a more controlled and isolated comparison of file conversion between duckdb, polars and pandas.
+- It also generates a plot of the results as seen above.
