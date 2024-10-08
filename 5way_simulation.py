@@ -297,9 +297,10 @@ def plot_results(results: list[dict]) -> None:
         results: The results of the simulation.
     """
     df = pd.DataFrame(results)
+    candidate_converters = ", ".join(sorted(list(df["converter_type"].unique())))
     title = dedent(
-        """
-    Distribution of execution time (DuckDB vs Pandas vs Polars)
+        f"""
+    Distribution of execution time ({candidate_converters})
     <br>
     <span style='font-size: 0.8em; color: gray'>
         * lower is better
