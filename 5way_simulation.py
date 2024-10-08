@@ -93,6 +93,8 @@ def run_converter(
             "error": None,
         }
     except Exception as e:
+        end_time = time.time()
+        duration = end_time - start_time
         return {
             "start_time": datetime.fromtimestamp(start_time).isoformat(),
             "end_time": datetime.fromtimestamp(end_time).isoformat(),
