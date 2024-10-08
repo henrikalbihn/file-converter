@@ -65,31 +65,43 @@ def run_converter(
     """
     start_time = time.time()
 
-    match converter_type:
-        case "duckdb":
-            duckdb_convert(input_file, output_format)
-        case "pandas":
-            pandas_convert(input_file, output_format)
-        case "polars":
-            polars_convert(input_file, output_format)
-        case "fireducks":
-            fireducks_convert(input_file, output_format)
-        case "datafusion":
-            datafusion_convert(input_file, output_format)
-        case _:
-            raise ValueError(f"Unknown converter type: {converter_type}")
+    try:
+        match converter_type:
+            case "duckdb":
+                duckdb_convert(input_file, output_format)
+            case "pandas":
+                pandas_convert(input_file, output_format)
+            case "polars":
+                polars_convert(input_file, output_format)
+            case "fireducks":
+                fireducks_convert(input_file, output_format)
+            case "datafusion":
+                datafusion_convert(input_file, output_format)
+            case _:
+                raise ValueError(f"Unknown converter type: {converter_type}")
 
-    end_time = time.time()
-    duration = end_time - start_time
+        end_time = time.time()
+        duration = end_time - start_time
 
-    return {
-        "start_time": datetime.fromtimestamp(start_time).isoformat(),
-        "end_time": datetime.fromtimestamp(end_time).isoformat(),
-        "duration": duration,
-        "input_file": input_file,
-        "output_format": output_format,
-        "converter_type": converter_type,
-    }
+        return {
+            "start_time": datetime.fromtimestamp(start_time).isoformat(),
+            "end_time": datetime.fromtimestamp(end_time).isoformat(),
+            "duration": duration,
+            "input_file": input_file,
+            "output_format": output_format,
+            "converter_type": converter_type,
+            "error": None,
+        }
+    except Exception as e:
+        return {
+            "start_time": datetime.fromtimestamp(start_time).isoformat(),
+            "end_time": datetime.fromtimestamp(end_time).isoformat(),
+            "duration": duration,
+            "input_file": input_file,
+            "output_format": output_format,
+            "converter_type": converter_type,
+            "error": str(e),
+        }
 
 
 def datafusion_convert(input_file: str, output_format: str) -> None:
@@ -125,7 +137,7 @@ def datafusion_convert(input_file: str, output_format: str) -> None:
                 raise ValueError(f"Unknown output format: {output_format}")
     except Exception as e:
         print(f"Error: {e}")
-        return
+        raise e
 
 
 def duckdb_convert(input_file: str, output_format: str) -> None:
@@ -266,7 +278,7 @@ def monte_carlo(iterations: int = ITERATIONS) -> list[dict]:
                 run_converter("pandas", INPUT_FILE, OUTPUT_FORMAT),
                 run_converter("polars", INPUT_FILE, OUTPUT_FORMAT),
                 run_converter("fireducks", INPUT_FILE, OUTPUT_FORMAT),
-                # run_converter("datafusion", INPUT_FILE, OUTPUT_FORMAT),
+                run_converter("datafusion", INPUT_FILE, OUTPUT_FORMAT),
             ]
         )
     return results
