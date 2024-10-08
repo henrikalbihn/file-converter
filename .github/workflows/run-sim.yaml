@@ -22,7 +22,7 @@ jobs:
         version: "0.4.19"
 
     - name: Install Python
-      run: uv python install 3.12
+      run: uv python install 3.10
 
     - name: Install dependencies
       run: |
