@@ -1,0 +1,69 @@
+name: Run 5-Way Simulation
+
+on:
+  push:
+    branches:
+      - simulate
+
+jobs:
+  run-simulation:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        if [ -f requirements.txt ]; then
+          pip install -r requirements.txt
+        elif [ -f Dockerfile ]; then
+          docker build -t simulation-image .
+        else
+          echo "Neither requirements.txt nor Dockerfile found"
+          exit 1
+        fi
+
+    - name: Run simulation script
+      run: |
+        if [ -f Dockerfile ]; then
+          docker run --rm -v ${{ github.workspace }}:/app simulation-image python /app/5way_simulation.py
+        else
+          python 5way_simulation.py
+        fi
+
+    - name: Generate Markdown Report
+      run: |
+        echo "# 5-Way Simulation Results" > report.md
+        echo "## Performance Plot" >> report.md
+        echo "![Performance Plot](img/plot.png)" >> report.md
+        echo "## Summary Statistics" >> report.md
+        echo '```' >> report.md
+        cat data/summary_stats.txt >> report.md
+        echo '```' >> report.md
+        echo "## Full Results" >> report.md
+        echo '```json' >> report.md
+        cat data/simulation_results.json >> report.md
+        echo '```' >> report.md
+
+    - name: Upload results
+      uses: actions/upload-artifact@v3
+      with:
+        name: simulation-results
+        path: |
+          data/simulation_results.json
+          img/plot.png
+          report.md
+
+    - name: Commit results
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add data/simulation_results.json img/plot.png report.md
+        git commit -m "Add simulation results and report [skip ci]" || echo "No changes to commit"
+        git push

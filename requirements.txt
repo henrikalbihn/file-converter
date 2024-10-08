@@ -4,3 +4,5 @@ plotly==5.24.1
 kaleido==0.2.1
 duckdb==1.1.1
 polars==1.9.0
+fireducks==1.0.6
+datafusion>=41.0.0
