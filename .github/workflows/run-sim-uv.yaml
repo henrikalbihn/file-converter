@@ -7,35 +7,44 @@ on:
 
 jobs:
   run-simulation:
+    # env:
+    #   UV_SYSTEM_PYTHON: 1
+
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
       with:
-        python-version: '3.12'
+        version: "0.4.19"
+
+    - name: Install Python
+      run: uv python install 3.10
 
     - name: Install dependencies
       run: |
-        pip install -r requirements.txt
+        uv venv .venv
+        uv pip install -r requirements.txt
+        uv pip install --upgrade setuptools wheel
 
     - name: Run simulation script
       run: |
+        source .venv/bin/activate
         echo "
         @@@@@@@@@@@@@@@@@@@@@@@@@@@@
           Downloading dataset...
         @@@@@@@@@@@@@@@@@@@@@@@@@@@@
         "
-        python download_dataset.py
+        uv run python download_dataset.py
         echo "
         @@@@@@@@@@@@@@@@@@@@@@@@@@@@
           Running simulation...
         @@@@@@@@@@@@@@@@@@@@@@@@@@@@
         "
-        python 5way_simulation.py
+        uv run python 5way_simulation.py
 
     - name: Generate Markdown Report
       run: |
