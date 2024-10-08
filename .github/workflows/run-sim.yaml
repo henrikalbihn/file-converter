@@ -28,6 +28,7 @@ jobs:
       run: |
         uv venv .venv
         uv pip install -r requirements.txt
+        uv pip install --upgrade setuptools wheel
 
     - name: Run simulation script
       run: |
