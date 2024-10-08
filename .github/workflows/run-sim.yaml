@@ -34,6 +34,17 @@ jobs:
         if [ -f Dockerfile ]; then
           docker run --rm -v ${{ github.workspace }}:/app simulation-image python /app/5way_simulation.py
         else
+          echo "
+          @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            Downloading dataset...
+          @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+          "
+          python download_dataset.py
+          echo "
+          @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            Running simulation...
+          @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+          "
           python 5way_simulation.py
         fi
 
