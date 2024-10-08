@@ -3,7 +3,7 @@ name: Run 5-Way Simulation
 on:
   push:
     branches:
-      - simulate
+      - simulation
 
 jobs:
   run-simulation:
