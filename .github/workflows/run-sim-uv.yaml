@@ -1,78 +1,78 @@
-name: Run 5-Way Simulation
+# name: Run 5-Way Simulation
 
-on:
-  push:
-    branches:
-      - simulation
+# on:
+#   push:
+#     branches:
+#       - simulation
 
-jobs:
-  run-simulation:
-    # env:
-    #   UV_SYSTEM_PYTHON: 1
+# jobs:
+#   run-simulation:
+#     # env:
+#     #   UV_SYSTEM_PYTHON: 1
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
 
-    - name: Install uv
-      uses: astral-sh/setup-uv@v3
-      with:
-        version: "0.4.19"
+#     - name: Install uv
+#       uses: astral-sh/setup-uv@v3
+#       with:
+#         version: "0.4.19"
 
-    - name: Install Python
-      run: uv python install 3.10
+#     - name: Install Python
+#       run: uv python install 3.10
 
-    - name: Install dependencies
-      run: |
-        uv venv .venv
-        uv pip install -r requirements.txt
-        uv pip install --upgrade setuptools wheel
+#     - name: Install dependencies
+#       run: |
+#         uv venv .venv
+#         uv pip install -r requirements.txt
+#         uv pip install --upgrade setuptools wheel
 
-    - name: Run simulation script
-      run: |
-        source .venv/bin/activate
-        echo "
-        @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          Downloading dataset...
-        @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        "
-        uv run python download_dataset.py
-        echo "
-        @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          Running simulation...
-        @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-        "
-        uv run python 5way_simulation.py
+#     - name: Run simulation script
+#       run: |
+#         source .venv/bin/activate
+#         echo "
+#         @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#           Downloading dataset...
+#         @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#         "
+#         uv run python download_dataset.py
+#         echo "
+#         @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#           Running simulation...
+#         @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#         "
+#         uv run python 5way_simulation.py
 
-    - name: Generate Markdown Report
-      run: |
-        echo "# 5-Way Simulation Results" > report.md
-        echo "## Performance Plot" >> report.md
-        echo "![Performance Plot](img/plot.png)" >> report.md
-        echo "## Summary Statistics" >> report.md
-        echo '```' >> report.md
-        cat data/summary_stats.txt >> report.md
-        echo '```' >> report.md
-        echo "## Full Results" >> report.md
-        echo '```json' >> report.md
-        cat data/simulation_results.json >> report.md
-        echo '```' >> report.md
+#     - name: Generate Markdown Report
+#       run: |
+#         echo "# 5-Way Simulation Results" > report.md
+#         echo "## Performance Plot" >> report.md
+#         echo "![Performance Plot](img/plot.png)" >> report.md
+#         echo "## Summary Statistics" >> report.md
+#         echo '```' >> report.md
+#         cat data/summary_stats.txt >> report.md
+#         echo '```' >> report.md
+#         echo "## Full Results" >> report.md
+#         echo '```json' >> report.md
+#         cat data/simulation_results.json >> report.md
+#         echo '```' >> report.md
 
-    - name: Upload results
-      uses: actions/upload-artifact@v3
-      with:
-        name: simulation-results
-        path: |
-          data/simulation_results.json
-          img/plot.png
-          report.md
+#     - name: Upload results
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: simulation-results
+#         path: |
+#           data/simulation_results.json
+#           img/plot.png
+#           report.md
 
-    - name: Commit results
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add data/simulation_results.json img/plot.png report.md
-        git commit -m "Add simulation results and report [skip ci]" || echo "No changes to commit"
-        git push
+#     - name: Commit results
+#       run: |
+#         git config --local user.email "action@github.com"
+#         git config --local user.name "GitHub Action"
+#         git add data/simulation_results.json img/plot.png report.md
+#         git commit -m "Add simulation results and report [skip ci]" || echo "No changes to commit"
+#         git push
