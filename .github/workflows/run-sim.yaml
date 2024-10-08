@@ -7,49 +7,41 @@ on:
 
 jobs:
   run-simulation:
+    env:
+      UV_SYSTEM_PYTHON: 1
+
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - name: Install uv
+      uses: astral-sh/setup-uv@v3
       with:
-        python-version: '3.12'
+        version: "0.4.19"
+
+    - name: Install Python
+      run: uv python install 3.12
 
     - name: Install dependencies
       run: |
-        if [ -f requirements.txt ]; then
-          pip install uv
-          uv venv .venv
-          uv pip install -r requirements.txt
-        elif [ -f Dockerfile ]; then
-          docker build -t simulation-image .
-        else
-          echo "Neither requirements.txt nor Dockerfile found"
-          exit 1
-        fi
+        uv pip install -r requirements.txt
 
     - name: Run simulation script
       run: |
-        if [ -f Dockerfile ]; then
-          docker run --rm -v ${{ github.workspace }}:/app simulation-image python /app/5way_simulation.py
-        else
-          source .venv/bin/activate
-          echo "
-          @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            Downloading dataset...
-          @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          "
-          python download_dataset.py
-          echo "
-          @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            Running simulation...
-          @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-          "
-          python 5way_simulation.py
-        fi
+        echo "
+        @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+          Downloading dataset...
+        @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        "
+        uv run python download_dataset.py
+        echo "
+        @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+          Running simulation...
+        @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        "
+        uv run python 5way_simulation.py
 
     - name: Generate Markdown Report
       run: |
