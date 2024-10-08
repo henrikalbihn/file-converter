@@ -7,14 +7,14 @@ on:
 
 jobs:
   run-simulation:
-    env:
-      UV_SYSTEM_PYTHON: 1
+    # env:
+    #   UV_SYSTEM_PYTHON: 1
 
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Install uv
       uses: astral-sh/setup-uv@v3
