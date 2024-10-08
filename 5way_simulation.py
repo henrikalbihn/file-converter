@@ -104,24 +104,28 @@ def datafusion_convert(input_file: str, output_format: str) -> None:
     ctx = SessionContext()
     # Datafusion requires pathlib.Path objects
     input_file = Path(input_file).resolve()
-    match input_format:
-        case "json":
-            df = ctx.read_json(input_file)
-        case "csv":
-            df = ctx.read_csv(input_file)
-        case "parquet":
-            df = ctx.read_parquet(input_file)
-        case _:
-            raise ValueError(f"Unknown input format: {input_format}")
-    match output_format:
-        case "csv":
-            df.write_csv(output_file, with_header=True)
-        case "parquet":
-            df.write_parquet(output_file)
-        case "json":
-            df.write_json(output_file)
-        case _:
-            raise ValueError(f"Unknown output format: {output_format}")
+    try:
+        match input_format:
+            case "json":
+                df = ctx.read_json(input_file)
+            case "csv":
+                df = ctx.read_csv(input_file)
+            case "parquet":
+                df = ctx.read_parquet(input_file)
+            case _:
+                raise ValueError(f"Unknown input format: {input_format}")
+        match output_format:
+            case "csv":
+                df.write_csv(output_file, with_header=True)
+            case "parquet":
+                df.write_parquet(output_file)
+            case "json":
+                df.write_json(output_file)
+            case _:
+                raise ValueError(f"Unknown output format: {output_format}")
+    except Exception as e:
+        print(f"Error: {e}")
+        return
 
 
 def duckdb_convert(input_file: str, output_format: str) -> None:
@@ -245,7 +249,7 @@ def polars_convert(input_file: str, output_format: str) -> None:
             df.write_json(output_file)
 
 
-def monte_carlo(iterations: int = ITERATIONS) -> list:
+def monte_carlo(iterations: int = ITERATIONS) -> list[dict]:
     """Run the Monte Carlo simulation.
 
     Args:
@@ -262,7 +266,7 @@ def monte_carlo(iterations: int = ITERATIONS) -> list:
                 run_converter("pandas", INPUT_FILE, OUTPUT_FORMAT),
                 run_converter("polars", INPUT_FILE, OUTPUT_FORMAT),
                 run_converter("fireducks", INPUT_FILE, OUTPUT_FORMAT),
-                run_converter("datafusion", INPUT_FILE, OUTPUT_FORMAT),
+                # run_converter("datafusion", INPUT_FILE, OUTPUT_FORMAT),
             ]
         )
     return results
