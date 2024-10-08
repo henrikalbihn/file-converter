@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - simulation
+permissions:
+  contents: write
+
 
 jobs:
   run-simulation:
