@@ -21,7 +21,9 @@ jobs:
     - name: Install dependencies
       run: |
         if [ -f requirements.txt ]; then
-          pip install -r requirements.txt
+          pip install uv
+          uv venv .venv
+          uv pip install -r requirements.txt
         elif [ -f Dockerfile ]; then
           docker build -t simulation-image .
         else
@@ -34,6 +36,7 @@ jobs:
         if [ -f Dockerfile ]; then
           docker run --rm -v ${{ github.workspace }}:/app simulation-image python /app/5way_simulation.py
         else
+          source .venv/bin/activate
           echo "
           @@@@@@@@@@@@@@@@@@@@@@@@@@@@
             Downloading dataset...

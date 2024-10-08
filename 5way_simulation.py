@@ -16,14 +16,14 @@ import polars as pl
 from datafusion import SessionContext
 
 INPUT_FILE = "data/mmlu-ml-100k.json"
-INPUT_FILE = Path(INPUT_FILE).resolve()
-assert INPUT_FILE.exists(), f"Input file not found: {INPUT_FILE}"
-assert INPUT_FILE.suffix in [
+INPUT_PATH = Path(INPUT_FILE).resolve()
+assert INPUT_PATH.exists(), f"Input file not found: {INPUT_FILE}"
+assert INPUT_PATH.suffix in [
     ".csv",
     ".parquet",
     ".json",
 ], "Input file must be a {CSV, Parquet, JSON} file"
-INPUT_FILE = str(INPUT_FILE)
+INPUT_FILE = str(INPUT_PATH)
 
 OUTPUT_FORMAT = "csv"
 ITERATIONS = 100
@@ -102,6 +102,8 @@ def datafusion_convert(input_file: str, output_format: str) -> None:
     output_file = f"/tmp/output_datafusion.{output_format}"
     input_format = get_input_format(input_file)
     ctx = SessionContext()
+    # Datafusion requires pathlib.Path objects
+    input_file = Path(input_file).resolve()
     match input_format:
         case "json":
             df = ctx.read_json(input_file)
